@@ -1,14 +1,10 @@
 # better-documents
 
-A skill for Claude Code, Cursor, and any SKILL.md-compatible agent that applies communication best practices when generating or reviewing business documents.
+A skill for Claude Code, Cursor, and any SKILL.md-compatible agent that makes the documents Claude writes for you actually work.
 
-## The problem
+When Claude drafts a proposal, memo, or deck without guidance, the result tends to bury the ask, open with context instead of conclusions, over-format everything, and look unmistakably AI-generated. The document might be accurate. It often isn't effective.
 
-There's a 290K-install skill that stops Claude from making ugly websites. Nothing equivalent exists for business documents — until now.
-
-Claude has a documented default visual style (cream backgrounds, Playfair headlines, terracotta accents) that Anthropic's own docs flag as inappropriate for most professional contexts, and note bleeds into slide decks. But the more important problem is structural: buried asks, author-centered openings, conclusions saved for the end, formatting used as a substitute for clarity. These are the patterns that make AI-generated documents feel thin even when they look fine.
-
-The agent skills ecosystem has deep coverage of code, UI, and deployment. Business document communication is almost entirely absent. This skill fills that gap.
+This skill fixes that — at generation time, before you have to go back and fix it yourself.
 
 ## What it does
 
