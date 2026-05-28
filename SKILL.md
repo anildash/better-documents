@@ -1,5 +1,5 @@
 ---
-name: document-review
+name: better-documents
 description: >
   Apply communication best practices when generating or reviewing any document,
   presentation, report, memo, slide deck, proposal, or email. Use this skill when

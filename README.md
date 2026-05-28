@@ -1,4 +1,4 @@
-# document-review
+# better-documents
 
 A skill for Claude Code, Cursor, and any SKILL.md-compatible agent that applies communication best practices when generating or reviewing business documents.
 
@@ -29,7 +29,7 @@ Two modes:
 ## Install
 
 ```bash
-npx skills add github:anildash/document-review
+npx skills add github:anildash/better-documents
 ```
 
 Or copy `SKILL.md` into your project root.

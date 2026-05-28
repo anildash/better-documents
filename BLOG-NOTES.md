@@ -1,4 +1,4 @@
-# Blog post notes: promoting the document-review skill
+# Blog post notes: promoting the better-documents skill
 
 ## The key insight / lede
 
@@ -28,7 +28,7 @@ board decks, client proposals, and status reports. Until now.
 ## Angles / framings to explore
 
 **The symmetry angle**
-The `frontend-design` skill for devs, the `document-review` skill for everyone
+The `frontend-design` skill for devs, the `better-documents` skill for everyone
 else. Devs already know to install skills for this kind of thing. Business users
 don't. This is the version that reaches them — via LinkedIn, not GitHub.
 
