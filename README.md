@@ -28,7 +28,7 @@ Two modes:
 npx skills add github:anildash/better-documents
 ```
 
-Or copy `SKILL.md` into your project root.
+Or copy `SKILL.md` and the `references/` directory into your project root.
 
 ## Usage
 
@@ -61,5 +61,6 @@ This tool is based on my blog post [Make better documents](https://www.anildash.
 ## Files
 
 - `SKILL.md` — the skill itself
+- `references/` — detailed checklists the skill points to: `formatting-restraint.md`, `visual-style.md`, `ai-tells.md`
 - `document-design.md` — the source guidelines in distilled form, useful as standalone reference
 - `BLOG-NOTES.md` — notes on the thinking behind this skill

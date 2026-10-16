@@ -10,6 +10,8 @@ description: >
   or any request to evaluate whether a document will land with its audience. Use
   this skill even when the request seems minor — a "quick look" or a "short memo"
   is exactly when these principles matter most.
+metadata:
+  version: 1.1.0
 ---
 
 # Document Review
@@ -45,8 +47,8 @@ The design principles here differ from frontend design in important ways:
 | Mode | When to use | What you do |
 |---|---|---|
 | **generate** | "write me a proposal," "create a deck," "draft a memo" | Apply all five principles while producing the document; no separate report needed |
-| **full-review** | "review this doc," "look at this deck" | Run all five passes on an existing document, produce a structured report |
-| **rewrite** | "fix this," "make this better" | Apply all passes and return a revised version |
+| **full-review** | "review this doc," "look at this deck" | Run all five passes plus the reader test on an existing document, produce a structured report |
+| **rewrite** | "fix this," "make this better" | Apply all passes, reader-test the result, return a revised version |
 | **targeted** | "is the ask clear," "check the formatting" | Run only the relevant pass(es) |
 | **quick** | "quick look," "does this work" | Run passes 1 and 2 only, flag the top 3 issues |
 
@@ -58,6 +60,11 @@ Default to **generate** when producing a new document from scratch. Default to
 ## The Five Passes
 
 Apply these in order. Each targets a different failure mode.
+
+In review and rewrite modes, after completing each pass, briefly re-check that
+the changes made in that pass did not compromise earlier passes — for example,
+a reordering in Pass 2 must not reintroduce Pass 3 formatting problems. Fix any
+regression before moving on.
 
 ### Pass 1 — Audience and Purpose
 
@@ -75,6 +82,10 @@ Check for:
 - **Missing deadline or stakes**: If a decision or response is needed, is the
   timeline stated? Is the reason for that timeline explained from the *audience's*
   perspective, not just the author's?
+
+If the audience is a board of directors, read `references/boardroom.md` before
+reviewing or generating. It covers how board members actually read, how power
+works in the room, and what the realistic goal of a board document is.
 
 Severity guide:
 - **CRITICAL** — The core ask or decision is absent or appears only at the end
@@ -113,24 +124,11 @@ Severity guide:
 ### Pass 3 — Formatting Restraint
 
 Over-formatting is the most visible symptom of unclear thinking. When everything
-is emphasized, nothing is.
+is emphasized, nothing is. This pass targets stacked emphasis, decorative
+underlines, too many colors, heavy borders, filler visuals, and inconsistent
+formatting that readers will mistake for meaning.
 
-Check for:
-
-- **Emphasis overload**: Are bold, italic, underline, and color being combined
-  on the same text? Flag any instance of two or more emphasis types on a single
-  element.
-- **Underlines on non-links**: Flag every underline that isn't a hyperlink.
-  Underlines exist to signal clickability; using them decoratively confuses readers.
-- **Color proliferation**: Count distinct colors in use (excluding images). More
-  than two is almost always a problem. More than three is always a problem.
-- **Border clutter**: Flag tables and sections with heavy borders. White space
-  separates content more clearly than lines.
-- **Filler visuals**: Flag images, icons, or clip art that aren't specific to
-  the content's message. A blank space is better than a stock photo.
-- **Formatting inconsistency**: Do headings, titles, or labels vary in size,
-  weight, or color across the document without clear reason? Flag inconsistencies
-  that will read as meaningful to an audience even if they weren't intentional.
+For the full checklist, see `references/formatting-restraint.md`.
 
 Severity guide:
 - **CRITICAL** — Formatting inconsistencies that will be read as semantic signals
@@ -193,6 +191,61 @@ Severity guide:
 
 ---
 
+## Reader Test
+
+In full-review and rewrite modes, after the five passes, verify the document
+works for its audience — not just for you, who know what the author meant.
+
+1. **Predict reader questions.** Write 3–5 questions the audience will
+   realistically ask when they read this: What are we deciding? What happens
+   if we say no? What does it cost? When is the deadline?
+2. **Test with a fresh reader.** If sub-agents are available, dispatch one
+   with only the document content and the questions — no context from this
+   conversation. If sub-agents are not available, skip this step and note in
+   the report that the reader test was not run.
+3. **Report failures.** Any question the fresh reader cannot answer from the
+   document alone is a Pass 1 (audience) finding. Include it in the report,
+   labeled "(reader test)," with the question that exposed it.
+
+The point is to catch author blind spots: things that make sense to the person
+who wrote the document but do not land on a cold read.
+
+---
+
+## Expert Panel
+
+For high-stakes documents (board decks, client proposals, anything going to an
+external audience), optionally assemble 3–5 expert personas relevant to the
+document type — for example, a skeptical board member, a busy executive skimming
+on a phone, or a first-time reader with no context. Each persona scores the
+document 1–10 and gives specific critiques, not just scores.
+
+Revise the lowest-scoring areas first, then re-score until all personas score 7+
+with an average of 8+.
+
+| Score | Meaning |
+|---|---|
+| 9–10 | Publish-ready; no meaningful improvements |
+| 7–8 | Strong; minor tweaks only |
+| 5–6 | Functional but has clear gaps; needs another pass |
+| 3–4 | Significant issues; major revision needed |
+| 1–2 | Fundamentally broken; rethink the approach |
+
+**When to use:** always for high-stakes external documents, optional for internal
+documents, skip in quick mode.
+
+---
+
+## AI Tells in Prose
+
+Default LLM prose has recognizable tells (contrast reveals, stock openers,
+placeholder adjectives, and similar) that make professional documents read as
+machine-generated. In generate mode, avoid these. In review modes, flag them.
+
+For the full list of tells, fixes, and what not to flag, see `references/ai-tells.md`.
+
+---
+
 ## Output Format
 
 ### Generate mode
@@ -206,23 +259,19 @@ not as a post-hoc checklist. Specifically:
   underlines, no more than two colors, white space over borders
 - Include structural signposts if the document is longer than one page or five slides
 - Give the document a title that includes topic, date, and relevant context
+- Write prose without AI tells: state points directly, no contrast reveals, no
+  stock openers, no placeholder adjectives (see `references/ai-tells.md`)
 
-**Override default visual style.** Claude's default document aesthetic — warm
-cream backgrounds, serif display type (Georgia, Fraunces, Playfair), terracotta
-or amber accents, and a "small all-caps label over a body copy block" slide
-layout — is recognizable as AI-generated and inappropriate for most professional
-contexts. Do not apply it.
+**Check for a brand context file.** Before asking about brand constraints, look
+for a `.better-documents/brand.md` file in the project root. If it exists, read
+it and use its brand colors, fonts, and template rules. If the user provides new
+brand information that differs from the file, update the file.
 
-Instead, before generating any document with visual styling:
-
-1. **Ask about brand or visual constraints first.** Does the user have brand
-   colors, a template, or a font they use? If so, follow those exactly.
-2. **If no brand guidance is given**, default to neutral: black text on white,
-   one sans-serif typeface throughout, no decorative color. The content should
-   do the work, not the palette.
-3. **If the user explicitly wants visual styling**, offer 2–3 distinct directions
-   in one sentence each (e.g. "neutral/minimal," "bold/high-contrast," "warm/
-   editorial") and let them choose before proceeding. Do not pick for them.
+**Override default visual style.** Do not apply Claude's default document
+aesthetic; it reads as AI-generated and is wrong for most professional contexts.
+Before generating any document with visual styling, ask about brand or visual
+constraints first, and default to neutral if there are none. For the full rule
+and procedure, see `references/visual-style.md`.
 
 No review report is needed in generate mode. The principles are baked in.
 
@@ -239,6 +288,7 @@ the one or two changes that would most improve it]
 
 ### Pass 1 — Audience and Purpose [N issues]
 [Each issue: location → what the problem is → suggested fix → severity]
+[Reader-test failures go here, labeled "(reader test)"]
 
 ### Pass 2 — Structure and Sequencing [N issues]
 [Same format]
@@ -252,6 +302,10 @@ the one or two changes that would most improve it]
 ### Pass 5 — Naming and Versioning [N issues]
 [Same format]
 
+### What's Working Well
+[2–3 specific things the document does right — what is clear, what is
+effective, what is worth keeping. Calibrates the findings. Do not pad it.]
+
 ### Top 3 Changes
 [The three revisions that would most improve this document's effectiveness,
 ranked by impact]
@@ -259,9 +313,11 @@ ranked by impact]
 
 ### Rewrite mode
 
-Return the revised document with a brief note after explaining what was changed
-in each pass and why. Do not explain every small edit — only the structural
-decisions that changed meaning or order.
+Apply all five passes and the AI-tell check, then reader-test the revised
+version (if sub-agents are available) before returning it. Return the revised
+document with a brief note after explaining what was changed in each pass and
+why. Do not explain every small edit — only the structural decisions that
+changed meaning or order.
 
 ### Quick mode
 
